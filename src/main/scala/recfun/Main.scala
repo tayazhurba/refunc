@@ -42,11 +42,14 @@ object Main {
     def countCoins(k: Int, coins: List[Int]): Int = {
       if (coins.isEmpty) k else countCoins(go(k), coins.tail)
     }
-    def countChange(k:Int, money: Int, countCoins: Int): Int = {
-
+    def countChange(k:Int,money: Int, countCoins: Int): Int = {
+      def cutOfHead(k:Int, coins:List[Int]):Int={
+        def back(k:Int):Int=k-1
+        if (back(k)==0) coins.head else cutOfHead(k, coins.tail)
+      }
       if (money == 0) 1
       else if (money < 0 || countCoins == 0) 0
-      else countChange(k, money, countCoins - 1) + countChange(k, money - coins.head, countCoins)
+      else countChange(k, money, countCoins - 1) + countChange(k, money - cutOfHead(go(k),coins), countCoins)
     }
     countChange(0, money, countCoins(0, coins))
   }
